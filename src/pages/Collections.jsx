@@ -112,34 +112,68 @@ const items = [
 
 const categories = ['All', 'Cocktail', 'Festive', 'Bridal', 'Ethnic', 'Accessories']
 
-export default function Collections({ setPage, category = 'All', setCategory }) {
+export default function Collections({ setPage, category = 'All', setCategory, search = '', setSearch }) {
   const active = category || 'All'
-  const filtered =
-    active === 'All' ? items : items.filter((p) => p.cat === active)
+  const q = (search || '').trim().toLowerCase()
+
+  let filtered = active === 'All' ? items : items.filter((p) => p.cat === active)
+
+  if (q) {
+    filtered = items.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.cat.toLowerCase().includes(q)
+    )
+  }
 
   return (
     <section className="section" style={{ paddingTop: 40 }}>
       <div className="container">
         <div className="section-head">
-          <h2>{active === 'All' ? 'Collections' : active}</h2>
+          <h2>
+            {q
+              ? `Results for “${search}”`
+              : active === 'All'
+              ? 'Collections'
+              : active}
+          </h2>
           <p>
-            {active === 'All'
+            {q
+              ? `${filtered.length} piece${filtered.length !== 1 ? 's' : ''} found`
+              : active === 'All'
               ? `${items.length} curated pieces · Cocktail · Festive · Bridal · Ethnic · Accessories`
               : `${filtered.length} piece${filtered.length !== 1 ? 's' : ''} in ${active}`}
           </p>
         </div>
 
-        <div className="cat-pills">
-          {categories.map((c) => (
+        {/* when searching, show a clear button */}
+        {q && (
+          <div style={{ textAlign: 'center', marginBottom: 20 }}>
             <button
-              key={c}
-              className={`cat-pill ${active === c ? 'active' : ''}`}
-              onClick={() => setCategory(c)}
+              className="btn btn-outline"
+              onClick={() => {
+                setSearch('')
+                setCategory('All')
+              }}
             >
-              {c}
+              Clear search
             </button>
-          ))}
-        </div>
+          </div>
+        )}
+    <div className="cat-pills">
+  {categories.map((c) => (
+    <button
+      key={c}
+      className={`cat-pill ${active === c ? 'active' : ''}`}
+      onClick={() => {
+        setSearch('')
+        setCategory(c)
+      }}
+    >
+      {c}
+    </button>
+  ))}
+</div>
 
         {filtered.length === 0 ? (
           <p style={{ textAlign: 'center', color: 'var(--muted)', padding: '40px 0' }}>

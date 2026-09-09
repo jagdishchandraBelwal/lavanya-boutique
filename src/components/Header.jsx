@@ -1,11 +1,21 @@
 import { useState } from 'react'
 
-export default function Header({ page, setPage, category, goCollections }) {
-  const [q, setQ] = useState('')
+export default function Header({ page, setPage, category, goCollections, search, setSearch, goSearch }) {
+  const [q, setQ] = useState(search || '')
 
   const go = (id) => setPage(id)
 
-  const isCatActive = (cat) => page === 'collections' && category === cat
+const isCatActive = (cat) => page === 'collections' && category === cat && !search
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    const value = q.trim()
+    if (value) {
+      goSearch(value)
+    } else {
+      goCollections('All')
+    }
+  }
 
   return (
     <>
@@ -30,14 +40,14 @@ export default function Header({ page, setPage, category, goCollections }) {
             <span>Multi Designer Store</span>
           </div>
 
-          <div className="header-search desktop-only">
-            <span style={{ opacity: 0.5 }}>⌕</span>
-            <input
-              placeholder="Search outfits, festive, bridal..."
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-            />
-          </div>
+    <form className="header-search desktop-only" onSubmit={handleSearch}>
+  <span style={{ opacity: 0.5 }}>⌕</span>
+  <input
+    placeholder="Search outfits, festive, bridal..."
+    value={q}
+    onChange={(e) => setQ(e.target.value)}
+  />
+</form>
 
           <div className="header-icons">
             <a

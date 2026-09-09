@@ -11,16 +11,27 @@ import Contact from './pages/Contact'
 export default function App() {
   const [page, setPage] = useState('home')
   const [category, setCategory] = useState('All')
+  const [search, setSearch] = useState('')
 
-  // Open Collections filtered by category
   const goCollections = (cat = 'All') => {
     setCategory(cat)
+    setSearch('') // clear search when picking a category
+    setPage('collections')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const goSearch = (query) => {
+    setSearch(query)
+    setCategory('All')
     setPage('collections')
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const goPage = (id) => {
-    if (id === 'collections') setCategory('All')
+    if (id === 'collections') {
+      setCategory('All')
+      setSearch('')
+    }
     setPage(id)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -33,6 +44,8 @@ export default function App() {
             setPage={goPage}
             category={category}
             setCategory={setCategory}
+            search={search}
+            setSearch={setSearch}
           />
         )
       case 'about':
@@ -53,6 +66,9 @@ export default function App() {
         setPage={goPage}
         category={category}
         goCollections={goCollections}
+        search={search}
+        setSearch={setSearch}
+        goSearch={goSearch}
       />
       <div className="page-wrap">{view()}</div>
       <Footer setPage={goPage} />
