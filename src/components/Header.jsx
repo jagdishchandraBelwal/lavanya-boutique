@@ -1,25 +1,11 @@
 import { useState } from 'react'
 
-export default function Header({ page, setPage }) {
+export default function Header({ page, setPage, category, goCollections }) {
   const [q, setQ] = useState('')
 
-  const cats = [
-    { id: 'home', label: 'Home' },
-    { id: 'collections', label: 'New Arrivals', badge: null },
-    { id: 'collections', label: 'Cocktail', badge: null },
-    { id: 'collections', label: 'Festive', badge: null },
-    { id: 'collections', label: 'Bridal', badge: null },
-    { id: 'collections', label: 'Ethnic', badge: null },
-    { id: 'collections', label: 'Accessories', badge: null },
-    { id: 'gallery', label: 'Gallery' },
-    { id: 'about', label: 'About' },
-    { id: 'contact', label: 'Visit Store' },
-  ]
+  const go = (id) => setPage(id)
 
-  const go = (id) => {
-    setPage(id)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  const isCatActive = (cat) => page === 'collections' && category === cat
 
   return (
     <>
@@ -27,7 +13,11 @@ export default function Header({ page, setPage }) {
         <div className="container topbar-inner">
           <span>187, Lane No. 5, Thapar Nagar, Meerut</span>
           <span>Multi Designer Store · Shipping available</span>
-          <a href="https://www.instagram.com/lavanyatheboutiqueindia/" target="_blank" rel="noreferrer">
+          <a
+            href="https://www.instagram.com/lavanyatheboutiqueindia/"
+            target="_blank"
+            rel="noreferrer"
+          >
             @lavanyatheboutiqueindia
           </a>
         </div>
@@ -50,13 +40,22 @@ export default function Header({ page, setPage }) {
           </div>
 
           <div className="header-icons">
-            <a href="https://www.instagram.com/lavanyatheboutiqueindia/" target="_blank" rel="noreferrer" className="desktop-only">
+            <a
+              href="https://www.instagram.com/lavanyatheboutiqueindia/"
+              target="_blank"
+              rel="noreferrer"
+              className="desktop-only"
+            >
               Instagram
             </a>
             <button onClick={() => go('contact')} className="desktop-only">
               Visit Store
             </button>
-            <button className="mobile-only" onClick={() => go('contact')} style={{ fontSize: '1.2rem' }}>
+            <button
+              className="mobile-only"
+              onClick={() => go('contact')}
+              style={{ fontSize: '1.2rem' }}
+            >
               📍
             </button>
           </div>
@@ -64,18 +63,72 @@ export default function Header({ page, setPage }) {
 
         <nav className="cat-nav desktop-only">
           <div className="container cat-nav-inner">
-            <button className={page === 'home' ? 'active' : ''} onClick={() => go('home')}>Home</button>
-            <button onClick={() => go('collections')}>
+            <button
+              className={page === 'home' ? 'active' : ''}
+              onClick={() => go('home')}
+            >
+              Home
+            </button>
+
+            <button onClick={() => goCollections('All')}>
               <span className="sale-badge">NEW</span>
             </button>
-            <button className={page === 'collections' ? 'active' : ''} onClick={() => go('collections')}>Cocktail</button>
-            <button onClick={() => go('collections')}>Festive</button>
-            <button onClick={() => go('collections')}>Bridal</button>
-            <button onClick={() => go('collections')}>Ethnic</button>
-            <button onClick={() => go('collections')}>Accessories</button>
-            <button className={page === 'gallery' ? 'active' : ''} onClick={() => go('gallery')}>Gallery</button>
-            <button className={page === 'about' ? 'active' : ''} onClick={() => go('about')}>About</button>
-            <button className={page === 'contact' ? 'active' : ''} onClick={() => go('contact')}>Visit Store</button>
+
+            <button
+              className={isCatActive('Cocktail') ? 'active' : ''}
+              onClick={() => goCollections('Cocktail')}
+            >
+              Cocktail
+            </button>
+
+            <button
+              className={isCatActive('Festive') ? 'active' : ''}
+              onClick={() => goCollections('Festive')}
+            >
+              Festive
+            </button>
+
+            <button
+              className={isCatActive('Bridal') ? 'active' : ''}
+              onClick={() => goCollections('Bridal')}
+            >
+              Bridal
+            </button>
+
+            <button
+              className={isCatActive('Ethnic') ? 'active' : ''}
+              onClick={() => goCollections('Ethnic')}
+            >
+              Ethnic
+            </button>
+
+            <button
+              className={isCatActive('Accessories') ? 'active' : ''}
+              onClick={() => goCollections('Accessories')}
+            >
+              Accessories
+            </button>
+
+            <button
+              className={page === 'gallery' ? 'active' : ''}
+              onClick={() => go('gallery')}
+            >
+              Gallery
+            </button>
+
+            <button
+              className={page === 'about' ? 'active' : ''}
+              onClick={() => go('about')}
+            >
+              About
+            </button>
+
+            <button
+              className={page === 'contact' ? 'active' : ''}
+              onClick={() => go('contact')}
+            >
+              Visit Store
+            </button>
           </div>
         </nav>
       </header>
